@@ -90,4 +90,9 @@ resources "aws_security_group" "allow_all" {
   wg set wg0 private-key <(echo "$vpnpriv")
 
   # Wireguard einen Peer bekannt machen
-  wg set wg0 peer ${trimspace(file("vpn-keys/tom.pub"))} allowed-ips 
+  wg set wg0 peer ${trimspace(file("vpn-keys/tom.pub"))} allowed-ips 192.168.0.2/32 
+
+  # Öffentliches Serverschloss an mein Handy per NTFY schicken
+  curl -s -d "Server läuft"
+             "IP: $(curl ifconfig.me)"
+             "öffentliches Schloss: $vpnpub" https://ntfy.sh/Portfolio-Server 
