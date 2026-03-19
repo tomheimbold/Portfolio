@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio-nginx
+    restart: unless-stopped
+
+    ports:
+      - "8080:80"         # Container Port 80
+      - "8443:443"        # für https unterstützung
+
+    volumes:
+      # Self-signed Zertifikate mounten
+      - ./certs/selfsigned.crt:/etc/nginx/ssl/selfsigned.crt:ro
+      - ./certs/selfsigned.key:/etc/nginx/ssl/selfsigned.key:ro
+     
+      - ./:/usr/share/nginx/html:ro # aktueller Ordner -> Nginx Ordner in Read-Only
+
+    networks:
+      - portfolio-net
+
+networks:
+  portfolio-net:
+    driver: bridge
